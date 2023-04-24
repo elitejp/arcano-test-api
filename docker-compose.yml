@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: arcano_api
+    build: .
+    ports:
+      - "${PORT}:3000"
+    environment:
+      - PORT=${PORT}
