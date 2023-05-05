@@ -7,6 +7,7 @@ import {
 } from "../interfaces/cart-history.interface";
 import { IProductDetail } from "../interfaces/product-detail.interface";
 import { ICartProducts, IUserCarts } from "../interfaces/user-carts.interface";
+import { IUser } from "../interfaces/user.interface";
 import axios from "axios";
 
 const listCartHistoryService = async (
@@ -20,8 +21,12 @@ const listCartHistoryService = async (
     .get(`https://fakestoreapi.com/carts/user/${userId}`)
     .then((res) => res.data);
 
+  const user: IUser = await axios
+    .get(`https://fakestoreapi.com/users/${userId}`)
+    .then((res) => res.data);
+
   if (userCarts.length === 0) {
-    throw new AppError("Esse usuario não existe ou não tem historico");
+    throw new AppError("Esse usuario não existe ou não tem historico", 404);
   }
 
   let userTotal = 0;
@@ -64,6 +69,8 @@ const listCartHistoryService = async (
 
   const cartHistoryResponse: ICartHistoryResponse = {
     userId: Number(userId),
+    email: user.email,
+    fullName: `${user.name.firstname} ${user.name.lastname}`,
     carts: userCartHistory,
     total: userTotal,
   };

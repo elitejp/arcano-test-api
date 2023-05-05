@@ -1,5 +1,7 @@
 export interface ICartHistoryResponse {
   userId: number;
+  email: string;
+  fullName: string;
   carts: ICartHistory[];
   total: number;
 }
