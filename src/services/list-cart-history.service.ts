@@ -16,13 +16,13 @@ const listCartHistoryService = async (
     .get("https://fakestoreapi.com/products")
     .then((res) => res.data);
 
-  console.log(products);
-
   const userCarts: IUserCarts[] = await axios
     .get(`https://fakestoreapi.com/carts/user/${userId}`)
     .then((res) => res.data);
 
-  console.log(userCarts);
+  if (userCarts.length === 0) {
+    throw new AppError("Esse usuario não existe ou não tem historico");
+  }
 
   let userTotal = 0;
   const userCartHistory = userCarts.map((carts: IUserCarts) => {
